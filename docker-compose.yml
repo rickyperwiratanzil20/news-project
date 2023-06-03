@@ -4,20 +4,10 @@ services:
     build:
       context: ./news-backend
       dockerfile: Dockerfile
-    environment:
-      DB_HOST: 127.0.0.1
-      DB_DATABASE: news_db
-      DB_USERNAME: root
-      DB_PASSWORD: 
-      MAIL_HOST: localhost
-      MAIL_PORT: 1025
-    volumes:
-      - ./news-backend:/var/www/html
     ports:
-      - 8000:8000
-      - 1025:1025
-    depends_on:
-      - database
+      - '8000:8000'
+    volumes:
+      - './news-backend:/var/www/html'
     networks:
       - news-network
   frontend:
@@ -36,7 +26,7 @@ services:
       - 3306:3306
     environment:
       MYSQL_DATABASE: news_db
-      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_ROOT_PASSWORD: 
     volumes:
       - ./db_data:/var/lib/mysql
     networks:
