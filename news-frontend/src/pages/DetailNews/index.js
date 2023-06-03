@@ -2,7 +2,7 @@ import React from 'react';
 import {RegisterBg} from '../../assets';
 import './detailNews.scss';
 import Link from './../../components/atoms/Link/index';
-import {useNavigate} from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 
 const DetailNews = () => {
   const navigate = useNavigate();
