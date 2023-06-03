@@ -15,7 +15,7 @@ services:
       context: ./news-frontend
       dockerfile: Dockerfile
     volumes:
-      - ./news-frontend:/app/src/app
+      - ./news-frontend:/app
     ports:
       - 3000:3000
     networks:
