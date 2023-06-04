@@ -6,6 +6,14 @@ const Home = () => {
   const [news, setNews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [keyword, setKeyword] = useState('');
+  const [filter, setFilter] = useState({
+    date: '',
+    category: '',
+    source: '',
+  });
+  
+  const baseUrlNYT = 'https://api.nytimes.com/svc/search/v2/articlesearch.json';
+  const apiKeyNYT = 'api-key=lGZzX8N9NY9hRIUyQqUHF45vszb7ar07';
 
   useEffect(() => {
     fetchData()
@@ -19,10 +27,33 @@ const Home = () => {
       });
   }, []);
 
+  const filterData = async () => {
+    try {
+      const { date, category, source } = filter;
+      let filterUrl = baseUrlNYT;
+
+      if (date !== '') {
+        filterUrl += `?fq=pub_date:${date}`;
+        if (category !== '') {
+          filterUrl += ` AND news_desk:${category}`;
+        }
+      } else if(category !== ''){
+        filterUrl += `?fq=news_desk:${category}`;
+      }
+
+      console.log(filterUrl);
+      const response = await fetch(`${filterUrl}&${apiKeyNYT}`);
+      const data = await response.json();
+      setNews(data.response.docs);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const fetchData = () => {
     return new Promise((resolve, reject) => {
       // Menggunakan fetch API untuk mengambil data dari API
-      fetch('https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=lGZzX8N9NY9hRIUyQqUHF45vszb7ar07')
+      fetch(`${baseUrlNYT}?${apiKeyNYT}`)
         .then(response => response.json())
         .then(data => resolve(data))
         .catch(error => reject(error));
@@ -31,12 +62,20 @@ const Home = () => {
 
   const searchAPI = async () => {
     try {
-      const response = await fetch(`https://api.nytimes.com/svc/search/v2/articlesearch.json?q=${keyword}&api-key=lGZzX8N9NY9hRIUyQqUHF45vszb7ar07`);
+      const response = await fetch(`${baseUrlNYT}?q=${keyword}&${apiKeyNYT}`);
       const data = await response.json();
       setNews(data.response.docs);
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const handleFilterChange = (event) => {
+    const { name, value } = event.target;
+    setFilter((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
   };
 
   if (loading) {
@@ -45,42 +84,73 @@ const Home = () => {
 
   return (
     <div className='home-page-wrapper'>
+      <div className="filter-container">
+        <div className="filter-row">
+          <label>Date:</label>
+          <input
+            type="text"
+            name="date"
+            value={filter.date}
+            onChange={handleFilterChange}
+            placeholder="YYYY-MM-DD"
+          />
+        </div>
 
-      {/* <div className='create-wrapper'>
-          <Button title="Create News" onClick={() => navigate('/create-news')}/>
-      </div> */}
+        <div className="filter-row">
+          <label>Category:</label>
+          <select name="category" value={filter.category} onChange={handleFilterChange}>
+            <option value="">--Select Your Category--</option>
+            <option value="Books">Books</option>
+            <option value="Booming">Booming</option>
+            <option value="Business">Business</option>
+          </select>
+        </div>
 
-      <div className="search-container">
-        <Input
-          placeholder="Search"
-          value={keyword}
-          onChange={(e) => setKeyword(e.target.value)}
-        />
-        <Gap width={20}/>
-        <Button onClick={searchAPI} title="GO"/>
+        <div className="filter-row">
+          <label>Source:</label>
+          <select name="source" value={filter.source} onChange={handleFilterChange}>
+            <option value="">--Select Your Source--</option>
+            <option value="sumber1">Sumber 1</option>
+            <option value="sumber2">Sumber 2</option>
+            <option value="sumber3">Sumber 3</option>
+          </select>
+        </div>
+        <Button onClick={filterData} title="GO"/>
       </div>
 
-      <Gap height={20}/>
-
-      <div className='content-wrapper'>
-      {news.map((nws, index) => (
-        <NewsItem
-          key={index}
-          title={nws.abstract}
-          author={nws.source}
-          date={nws.pub_date}
-          content={nws.lead_paragraph}
-        />
-      ))}
-      </div>
-
-      <div className='pagination'>
-          <Button title="Previous" />
+      <div className="content-container">
+        <div className="search-container">
+          <Input
+            placeholder="Search"
+            value={keyword}
+            onChange={(e) => setKeyword(e.target.value)}
+          />
           <Gap width={20}/>
-          <Button title="Next"/>
-      </div>
+          <Button onClick={searchAPI} title="GO"/>
+        </div>
 
-      <Gap height={20}/>
+        <Gap height={20}/>
+
+        <div className='content-wrapper'>
+        {news.map((nws, index) => (
+          <NewsItem
+            key={index}
+            title={nws.abstract}
+            author={nws.source}
+            date={nws.pub_date}
+            content={nws.lead_paragraph}
+          />
+        ))}
+        </div>
+
+        <div className='pagination'>
+            <Button title="Previous" />
+            <Gap width={20}/>
+            <Button title="Next"/>
+        </div>
+
+        <Gap height={20}/>
+      </div>
     </div>
   )
 }

@@ -6,12 +6,15 @@ import Button from './../../atoms/Button/index';
 
 const NewsItem = ({ title, author, date, content }) => {
   const navigate = useNavigate();
-  const data = {
-    "title" : {title},
-    "author" : {author},
-    "date" : {date},
-    "content" : {content}
-  }
+  const sendDataToReceiver = () => {
+    const data = {
+      title: title,
+      author: author,
+      date: date,
+      content: content
+    }
+    navigate('/detail-news', { state: { data } });
+  };
 
   return(
     <div className='news-item'>
@@ -20,7 +23,7 @@ const NewsItem = ({ title, author, date, content }) => {
         <p className='title'>{title}</p>
         <p className='author'>{author} - {date}</p>
         <p className='body'>{content}</p>
-        <Button title="View Detail" onClick={() => navigate(`/detail-news`)} />
+        <Button title="View Detail" onClick={sendDataToReceiver} />
       </div>
     </div>
   )

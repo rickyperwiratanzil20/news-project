@@ -2,16 +2,19 @@ import React from 'react';
 import {RegisterBg} from '../../assets';
 import './detailNews.scss';
 import Link from './../../components/atoms/Link/index';
-import {useNavigate, useParams} from 'react-router-dom';
+import {useNavigate, useLocation} from 'react-router-dom';
 
 const DetailNews = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const receivedData = location.state?.data || {};
+
   return(
       <div className='detail-news-wrapper'>
           <img className='img-cover' src={RegisterBg} alt="thumb"/>
-          <p className='news-title'>Title News</p>
-          <p className='news-author'>Author - Date Post</p>
-          <p className='news-body'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam, saepe iure culpa laborum quam ex modi tenetur. Odio quibusdam dignissimos nisi voluptatibus mollitia, veritatis quidem! Voluptatum nulla aperiam asperiores quam?</p>
+          <p className='news-title'>{receivedData.title}</p>
+          <p className='news-author'>{receivedData.author} - {receivedData.date}</p>
+          <p className='news-body'>{receivedData.content}</p>
           <Link title="Kembali" onClick={() => navigate('/')} />
       </div>
   )
