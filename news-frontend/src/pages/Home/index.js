@@ -29,7 +29,7 @@ const Home = () => {
 
   const filterData = async () => {
     try {
-      const { date, category, source } = filter;
+      const { date, category } = filter;
       let filterUrl = baseUrlNYT;
 
       if (date !== '') {
@@ -41,7 +41,6 @@ const Home = () => {
         filterUrl += `?fq=news_desk:${category}`;
       }
 
-      console.log(filterUrl);
       const response = await fetch(`${filterUrl}&${apiKeyNYT}`);
       const data = await response.json();
       setNews(data.response.docs);
@@ -52,7 +51,6 @@ const Home = () => {
 
   const fetchData = () => {
     return new Promise((resolve, reject) => {
-      // Menggunakan fetch API untuk mengambil data dari API
       fetch(`${baseUrlNYT}?${apiKeyNYT}`)
         .then(response => response.json())
         .then(data => resolve(data))
@@ -110,8 +108,8 @@ const Home = () => {
           <label>Source:</label>
           <select name="source" value={filter.source} onChange={handleFilterChange}>
             <option value="">--Select Your Source--</option>
-            <option value="sumber1">Sumber 1</option>
-            <option value="sumber2">Sumber 2</option>
+            <option value="sumber1">New York Time</option>
+            <option value="sumber2">The Guarians</option>
             <option value="sumber3">Sumber 3</option>
           </select>
         </div>

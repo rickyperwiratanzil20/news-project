@@ -1,5 +1,42 @@
+# version: '3'
+# services:
+#   backend:
+#     build:
+#       context: ./news-backend
+#       dockerfile: Dockerfile
+#     ports:
+#       - '8000:8000'
+#     volumes:
+#       - './news-backend:/var/www/html'
+#     networks:
+#       - news-network
+#   frontend:
+#     build:
+#       context: ./news-frontend
+#       dockerfile: Dockerfile
+#     volumes:
+#       - ./news-frontend:/app
+#     ports:
+#       - 3000:3000
+#     networks:
+#       - news-network
+#   database:
+#     image: mysql:5.7
+#     ports:
+#       - 3306:3306
+#     environment:
+#       MYSQL_DATABASE: news_db
+#       MYSQL_ROOT_PASSWORD: 
+#     volumes:
+#       - ./db_data:/var/lib/mysql
+#     networks:
+#       - news-network
+# networks:
+#   news-network:
+
 version: '3'
 services:
+
   backend:
     build:
       context: ./news-backend
@@ -8,8 +45,9 @@ services:
       - '8000:8000'
     volumes:
       - './news-backend:/var/www/html'
-    networks:
-      - news-network
+    depends_on:
+      - database
+
   frontend:
     build:
       context: ./news-frontend
@@ -18,18 +56,27 @@ services:
       - ./news-frontend:/app
     ports:
       - 3000:3000
-    networks:
-      - news-network
+    depends_on:
+      - database
+
   database:
-    image: mysql:5.7
-    ports:
-      - 3306:3306
+    image: mysql:latest
     environment:
       MYSQL_DATABASE: news_db
-      MYSQL_ROOT_PASSWORD: 
+      MYSQL_PASSWORD: null
+      MYSQL_RANDOM_ROOT_PASSWORD: yes
+    ports:
+      - '3306:3306'
     volumes:
-      - ./db_data:/var/lib/mysql
-    networks:
-      - news-network
-networks:
-  news-network:
+      - ./database:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      PMA_HOST: database
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: null
+    depends_on:
+      - database
+    ports:
+      - 8080:8080
