@@ -45,8 +45,6 @@ services:
       - '8000:8000'
     volumes:
       - './news-backend:/var/www/html'
-    depends_on:
-      - database
 
   frontend:
     build:
@@ -56,8 +54,6 @@ services:
       - ./news-frontend:/app
     ports:
       - 3000:3000
-    depends_on:
-      - database
 
   database:
     image: mysql:latest
@@ -71,12 +67,8 @@ services:
       - ./database:/var/lib/mysql
 
   phpmyadmin:
-    image: phpmyadmin/phpmyadmin
+    image: phpmyadmin:latest
     environment:
-      PMA_HOST: database
-      PMA_PORT: 3306
-      MYSQL_ROOT_PASSWORD: null
-    depends_on:
-      - database
+      PMA_ARBITRARY: 1
     ports:
-      - 8080:8080
+      - 9001:80
