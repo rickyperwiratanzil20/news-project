@@ -22,7 +22,7 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        return response()->json(['message' => 'Registration successful']);
+        return response()->json(['success' => TRUE,'message' => 'Registration successful']);
     }
 
     public function login(Request $request)
@@ -35,9 +35,14 @@ class AuthController extends Controller
         $user = User::where('email', $request->email)->first();
 
         if (!$user || !Hash::check($request->password, $user->password)) {
-            return response()->json(['message' => 'Invalid login credentials'], 401);
+            return response()->json(
+                [
+                    'success' => FALSE,
+                    'message' => 'Invalid login credentials'
+                ]
+            );
         }
 
-        return response()->json(['message' => 'Login successful']);
+        return response()->json(['success' => TRUE,'message' => 'Login successful']);
     }
 }

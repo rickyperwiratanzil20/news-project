@@ -38,7 +38,7 @@ const Register = () => {
             setFailed(false);
         })
         .catch((error) => {
-            console.error('Error:', error);
+            console.log('Error:', error);
             setLoading(false);
             setSuccess(false);
             setFailed(true);
@@ -65,7 +65,7 @@ const Register = () => {
                         <Gap height={20}/>
                         <Button title='Register' type="submit"/>
                         <Gap height={60}/>
-                        <Link title="Kembali Ke Login" onClick={() => navigate('/login')}/>
+                        <Link title="Go To Login" onClick={() => navigate('/login')}/>
                     </form>
                 )}
             </div>

@@ -25,8 +25,12 @@ const Login = () => {
         })
         .then((response) => response.json())
         .then((data) => {
-            localStorage.setItem('isLoggedIn', 'true');
-            navigate('/')
+            if(data.success){
+                localStorage.setItem('isLoggedIn', 'true');
+                navigate('/')
+            } else {
+                setSuccess(true)
+            }
             setLoading(false);
         })
         .catch((error) => {
