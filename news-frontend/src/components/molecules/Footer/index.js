@@ -13,14 +13,6 @@ const Icon = ({img}) => {
 const Footer = () => {
   return(
       <div>
-        <div className='footer'>
-          <div>
-            <img className='logo' src={LogoImportir} alt="Logo-Importir"/>
-          </div>
-          <div className='sosial-wrapper'>
-            <Icon img={ICFacebook}/>
-          </div>
-        </div>
         <div className='copyright'>
           <p>Copyright</p>
         </div>

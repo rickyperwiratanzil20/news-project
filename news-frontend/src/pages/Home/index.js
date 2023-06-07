@@ -141,12 +141,6 @@ const Home = () => {
         ))}
         </div>
 
-        <div className='pagination'>
-            <Button title="Previous" />
-            <Gap width={20}/>
-            <Button title="Next"/>
-        </div>
-
         <Gap height={20}/>
       </div>
     </div>
