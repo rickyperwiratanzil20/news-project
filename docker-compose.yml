@@ -11,6 +11,8 @@ services:
       - './news-backend:/var/www/html'
     networks:
       - news-network
+    depends_on:
+      - database
 
   frontend:
     build:
@@ -22,6 +24,8 @@ services:
       - 3000:3000
     networks:
       - news-network
+    depends_on:
+      - database
 
   database:
     image: mysql:latest
@@ -47,6 +51,8 @@ services:
       - 9001:80
     networks:
       - news-network
+    depends_on:
+      - database
 
 networks:
   news-network:
