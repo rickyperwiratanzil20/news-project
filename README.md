@@ -25,12 +25,12 @@ Step 3: Running the Project
 3. Open CMD in news-project and type :
       docker-compose up --build
 4. Before Access the project, Open CMD in news-project and type : 
-      php artisan migrate:fresh --seed
+      php artisan migrate:fresh --seed,
    for migrate the database
 6. After the build process is complete, you can access the Laravel application at http://localhost:8000, the ReactJS application at http://localhost:3000, the Phpmyadmin application at http://localhost:9001
 7. To open Phpmyadmin MySQL server,
-    Server Name : database
-    User : root
-    Pass : secret
+    Server Name : database,
+    User : root,
+    Pass : secret,
 
 Congratulations! You have successfully set up and run the News-Project in Laravel + ReactJS project using Docker Compose.
