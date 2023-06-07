@@ -16,11 +16,11 @@ class AuthController extends Controller
             'password' => 'required|min:8',
         ]);
 
-        User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+        // User::create([
+        //     'name' => $request->name,
+        //     'email' => $request->email,
+        //     'password' => Hash::make($request->password),
+        // ]);
 
         return response()->json(['message' => 'Registration successful']);
     }
@@ -38,8 +38,6 @@ class AuthController extends Controller
             return response()->json(['message' => 'Invalid login credentials'], 401);
         }
 
-        $token = $user->createToken('authToken')->plainTextToken;
-
-        return response()->json(['token' => $token], 200);
+        return response()->json(['message' => 'Login successful']);
     }
 }

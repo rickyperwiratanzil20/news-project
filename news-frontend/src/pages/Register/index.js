@@ -9,11 +9,15 @@ const Register = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [success, setSuccess] = useState(false);
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        fetch('/api/register', {
+        setLoading(true);
+
+        fetch('http://localhost:8000/api/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -22,10 +26,12 @@ const Register = () => {
         })
         .then((response) => response.json())
         .then((data) => {
-            console.log(data);
+            setSuccess(true);
+            setLoading(false);
         })
         .catch((error) => {
             console.error('Error:', error);
+            setLoading(false);
         });
     };
 
@@ -36,17 +42,21 @@ const Register = () => {
             </div>
             <div className='right'>
                 <p className='title'>Register</p>
-                <form onSubmit={handleSubmit}>
-                    <Input label="Full Name" placeholder="Full Name" type="text" value={name} onChange={(e) => setName(e.target.value)}/>
-                    <Gap height={18}/>
-                    <Input label="Email" placeholder="Email" type="text" value={email} onChange={(e) => setEmail(e.target.value)}/>
-                    <Gap height={18}/>
-                    <Input label="Password" placeholder="Password" type="text" value={password} onChange={(e) => setPassword(e.target.value)}/>
-                    <Gap height={20}/>
-                    <Button title='Register' type="submit"/>
-                    <Gap height={60}/>
-                    <Link title="Kembali Ke Login" onClick={() => navigate('/login')}/>
-                </form>
+                {loading && <p>Loading...</p>}
+                {success && <script>alert("Registration Complete");</script>}
+                {!loading && (
+                    <form onSubmit={handleSubmit}>
+                        <Input label="Full Name" placeholder="Full Name" type="text" value={name} onChange={(e) => setName(e.target.value)}/>
+                        <Gap height={18}/>
+                        <Input label="Email" placeholder="Email" type="text" value={email} onChange={(e) => setEmail(e.target.value)}/>
+                        <Gap height={18}/>
+                        <Input label="Password" placeholder="Password" type="text" value={password} onChange={(e) => setPassword(e.target.value)}/>
+                        <Gap height={20}/>
+                        <Button title='Register' type="submit"/>
+                        <Gap height={60}/>
+                        <Link title="Kembali Ke Login" onClick={() => navigate('/login')}/>
+                    </form>
+                )}
             </div>
         </div>
     )
