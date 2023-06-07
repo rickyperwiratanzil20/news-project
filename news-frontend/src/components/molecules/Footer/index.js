@@ -1,5 +1,4 @@
 import React from 'react';
-import { ICFacebook, LogoImportir } from '../../../assets';
 import './footer.scss';
 
 const Icon = ({img}) => {

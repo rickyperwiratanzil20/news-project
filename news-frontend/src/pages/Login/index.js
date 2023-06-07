@@ -14,6 +14,7 @@ const Login = () => {
         e.preventDefault();
 
         setLoading(true);
+        setSuccess(false);
 
         fetch('http://localhost:8000/api/login', {
             method: 'POST',
@@ -24,12 +25,14 @@ const Login = () => {
         })
         .then((response) => response.json())
         .then((data) => {
-            setSuccess(true);
+            localStorage.setItem('isLoggedIn', 'true');
+            navigate('/')
             setLoading(false);
         })
         .catch((error) => {
             console.log('Error:', error);
             setLoading(false);
+            setSuccess(true)
         });
     };
 
@@ -41,12 +44,12 @@ const Login = () => {
             <div className='right'>
                 <p className='title'>Login</p>
                 {loading && <p>Loading...</p>}
-                {success && <p>Login Complete</p>}
+                {success && <p>Login Failed</p>}
                 {!loading && (
                     <form onSubmit={handleSubmit}>
-                        <Input label="Email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)}/>
+                        <Input label="Email" placeholder="Email" type="text" value={email} onChange={(e) => setEmail(e.target.value)}/>
                         <Gap height={18}/>
-                        <Input label="Password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)}/>
+                        <Input label="Password" placeholder="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
                         <Gap height={20}/>
                         <Button title='Login' type="submit"/>
                         <Gap height={60}/>

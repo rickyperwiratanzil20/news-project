@@ -11,11 +11,11 @@ const DetailNews = () => {
 
   return(
       <div className='detail-news-wrapper'>
-          <img className='img-cover' src={RegisterBg} alt="thumb"/>
+          <img className='img-cover' src={receivedData.image} alt="thumb"/>
           <p className='news-title'>{receivedData.title}</p>
           <p className='news-author'>{receivedData.author} - {receivedData.date}</p>
           <p className='news-body'>{receivedData.content}</p>
-          <Link title="Kembali" onClick={() => navigate('/')} />
+          <Link title="Back" onClick={() => navigate('/')} />
       </div>
   )
 }

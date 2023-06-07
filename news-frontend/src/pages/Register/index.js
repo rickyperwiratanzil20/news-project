@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import './register.scss';
 import {RegisterBg} from '../../assets';
 import { Button, Gap, Input, Link } from '../../components';
@@ -11,11 +11,18 @@ const Register = () => {
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
+    const [failed, setFailed] = useState(false);
+
+    useEffect(() => {
+        setSuccess(false);
+      }, []);
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
         setLoading(true);
+        setSuccess(false);
+        setFailed(false);
 
         fetch('http://localhost:8000/api/register', {
             method: 'POST',
@@ -28,10 +35,13 @@ const Register = () => {
         .then((data) => {
             setSuccess(true);
             setLoading(false);
+            setFailed(false);
         })
         .catch((error) => {
             console.error('Error:', error);
             setLoading(false);
+            setSuccess(false);
+            setFailed(true);
         });
     };
 
@@ -43,14 +53,15 @@ const Register = () => {
             <div className='right'>
                 <p className='title'>Register</p>
                 {loading && <p>Loading...</p>}
-                {success && <script>alert("Registration Complete");</script>}
+                {success && <p>Registration Complete</p>}
+                {failed && <p>Registration Failed</p>}
                 {!loading && (
                     <form onSubmit={handleSubmit}>
                         <Input label="Full Name" placeholder="Full Name" type="text" value={name} onChange={(e) => setName(e.target.value)}/>
                         <Gap height={18}/>
                         <Input label="Email" placeholder="Email" type="text" value={email} onChange={(e) => setEmail(e.target.value)}/>
                         <Gap height={18}/>
-                        <Input label="Password" placeholder="Password" type="text" value={password} onChange={(e) => setPassword(e.target.value)}/>
+                        <Input label="Password" placeholder="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
                         <Gap height={20}/>
                         <Button title='Register' type="submit"/>
                         <Gap height={60}/>
