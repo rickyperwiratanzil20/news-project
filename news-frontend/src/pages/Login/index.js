@@ -51,7 +51,7 @@ const Login = () => {
                 {success && <p>Login Failed</p>}
                 {!loading && (
                     <form onSubmit={handleSubmit}>
-                        <Input label="Email" placeholder="Email" type="text" value={email} onChange={(e) => setEmail(e.target.value)}/>
+                        <Input label="Email" placeholder="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)}/>
                         <Gap height={18}/>
                         <Input label="Password" placeholder="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
                         <Gap height={20}/>
